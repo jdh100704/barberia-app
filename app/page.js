@@ -13,7 +13,7 @@ export default function Home() {
   const [mensajeCompleto, setMensajeCompleto] = useState(false)
   const [datosReserva, setDatosReserva] = useState(null)
 
-  const TELEFONO_BARBERIA = '34644616651'
+  const TELEFONO_BARBERIA = '34600000000'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -47,10 +47,10 @@ export default function Home() {
     <main className="min-h-screen bg-neutral-950 flex items-center justify-center p-4 selection:bg-amber-500 selection:text-black">
       <div className="bg-neutral-900 border border-neutral-800 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-lg w-full text-neutral-100">
         
-        {/* Encabezado elegante */}
+        {/* Encabezado elegante con comillas corregidas */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-serif tracking-widest text-amber-500 uppercase font-bold mb-1">
-            The Gent's Club
+            {"The Gent's Club"}
           </h1>
           <p className="text-xs text-neutral-400 tracking-widest uppercase mb-4">
             Barbería & Estilo Masculino
