@@ -13,7 +13,7 @@ export default function Home() {
   const [mensajeCompleto, setMensajeCompleto] = useState(false)
   const [datosReserva, setDatosReserva] = useState(null)
 
-  const TELEFONO_BARBERIA = '34600000000'
+  const TELEFONO_BARBERIA = '34644616651'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
