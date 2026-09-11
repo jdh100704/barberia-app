@@ -12,7 +12,7 @@ export default function AdminPage() {
   const [errorPass, setErrorPass] = useState(false)
 
   // Define aquí la contraseña del panel de administración
-  const ADMIN_PASSWORD = 'admin'
+  const ADMIN_PASSWORD = '310125'
 
   useEffect(() => {
     // Comprobar si ya se había autenticado en esta sesión del navegador
