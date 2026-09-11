@@ -5,6 +5,39 @@ import { supabase } from '@/lib/supabase'
 export default function AdminPage() {
   const [citas, setCitas] = useState([])
   const [cargando, setCargando] = useState(true)
+  
+  // Estado para la autenticación simple
+  const [autenticado, setAutenticado] = useState(false)
+  const [passInput, setPassInput] = useState('')
+  const [errorPass, setErrorPass] = useState(false)
+
+  // Define aquí la contraseña del panel de administración
+  const ADMIN_PASSWORD = 'admin'
+
+  useEffect(() => {
+    // Comprobar si ya se había autenticado en esta sesión del navegador
+    const sessionAuth = sessionStorage.getItem('admin_auth')
+    if (sessionAuth === 'true') {
+      setAutenticado(true)
+    }
+  }, [])
+
+  const handleLogin = (e) => {
+    e.preventDefault()
+    if (passInput === ADMIN_PASSWORD) {
+      setAutenticado(true)
+      sessionStorage.setItem('admin_auth', 'true')
+      setErrorPass(false)
+    } else {
+      setErrorPass(true)
+    }
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('admin_auth')
+    setAutenticado(false)
+    setPassInput('')
+  }
 
   const cargarCitas = async () => {
     setCargando(true)
@@ -35,15 +68,64 @@ export default function AdminPage() {
   }
 
   useEffect(() => {
-    cargarCitas()
-  }, [])
+    if (autenticado) {
+      cargarCitas()
+    }
+  }, [autenticado])
 
+  // PANTALLA DE BLOQUEO / LOGIN
+  if (!autenticado) {
+    return (
+      <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg max-w-sm w-full text-black">
+          <h1 className="text-2xl font-bold text-center mb-2 text-gray-800">
+            Acceso Restringido
+          </h1>
+          <p className="text-sm text-gray-500 text-center mb-6">
+            Introduce la clave de administración para acceder.
+          </p>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                placeholder="Contraseña"
+                value={passInput}
+                onChange={(e) => setPassInput(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none"
+              />
+              {errorPass && (
+                <p className="text-red-600 text-xs mt-1">Contraseña incorrecta.</p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition duration-200"
+            >
+              Entrar al Panel
+            </button>
+          </form>
+        </div>
+      </main>
+    )
+  }
+
+  // PANEL DE ADMINISTRACIÓN (Una vez desbloqueado)
   return (
     <main className="min-h-screen bg-gray-100 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center sm:text-left">
-          Panel de Administración
-        </h1>
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center sm:text-left">
+            Panel de Administración
+          </h1>
+          <button
+            onClick={handleLogout}
+            className="text-xs bg-gray-200 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-300 transition"
+          >
+            🔒 Cerrar sesión
+          </button>
+        </div>
 
         {cargando ? (
           <p className="text-gray-600 text-center">Cargando citas...</p>
@@ -92,7 +174,7 @@ export default function AdminPage() {
               ))}
             </div>
 
-            {/* VISTA ESCRITORIO: Tabla tradicional (se oculta en móviles) */}
+            {/* VISTA ESCRITORIO: Tabla */}
             <div className="hidden sm:block bg-white rounded-xl shadow-md overflow-hidden">
               <table className="w-full text-left border-collapse">
                 <thead>
