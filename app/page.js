@@ -13,8 +13,7 @@ export default function Home() {
   const [mensajeCompleto, setMensajeCompleto] = useState(false)
   const [datosReserva, setDatosReserva] = useState(null)
 
-  // Cambia esto por tu número real para probarlo
-  const TELEFONO_BARBERIA = '34600000000' 
+  const TELEFONO_BARBERIA = '34600000000'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -23,6 +22,7 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setCargando(true)
+
     const { data, error } = await supabase
       .from('citas')
       .insert([formData])
@@ -43,34 +43,30 @@ export default function Home() {
     return `https://wa.me/${TELEFONO_BARBERIA}?text=${texto}`
   }
 
-  // Clases compartidas para los inputs
-  const inputClasses = "w-full p-4 bg-[#1e1e1e] border border-gray-800 rounded-xl focus:ring-2 focus:ring-[#c6a87d] focus:border-[#c6a87d] outline-none text-gray-100 placeholder-gray-600 transition duration-150"
-
   return (
-    <main className="min-h-screen bg-[#121212] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Fondo decorativo sutil (un degradado radial) */}
-      <div className="absolute inset-0 bg-[radial-gradient(#1e1e1e_1px,transparent_1px)] [background-size:20px_20px] opacity-30"></div>
-
-      <div className="bg-[#1a1a1a] p-8 sm:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-w-lg w-full text-gray-200 border border-gray-800 relative z-10 transition-all duration-300">
+    <main className="min-h-screen bg-neutral-950 flex items-center justify-center p-4 selection:bg-amber-500 selection:text-black">
+      <div className="bg-neutral-900 border border-neutral-800 p-8 sm:p-10 rounded-3xl shadow-2xl max-w-lg w-full text-neutral-100">
         
-        {/* Cabecera Premium */}
-        <div className="text-center mb-10">
-          <h1 className="font-['Playfair_Display'] text-4xl sm:text-5xl font-bold text-[#c6a87d] tracking-tight">
+        {/* Encabezado elegante */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-serif tracking-widest text-amber-500 uppercase font-bold mb-1">
             The Gent's Club
           </h1>
-          <p className="text-gray-500 mt-2 text-sm tracking-widest uppercase">
+          <p className="text-xs text-neutral-400 tracking-widest uppercase mb-4">
             Barbería & Estilo Masculino
           </p>
-          <div className="w-24 h-px bg-[#c6a87d] mx-auto mt-5 opacity-60"></div>
+          <div className="w-12 h-0.5 bg-amber-500/50 mx-auto rounded-full mb-6"></div>
+          <h2 className="text-lg font-light text-neutral-200">
+            Reserva de Servicios Online
+          </h2>
         </div>
 
         {mensajeCompleto ? (
           <div className="text-center space-y-6">
-            <div className="bg-[#1e1e1e] border border-emerald-900 text-emerald-300 p-6 rounded-2xl shadow-inner">
-              <p className="font-bold text-xl">¡Cita agendada, Caballero!</p>
-              <p className="text-sm mt-2 text-emerald-400/80">
-                Su reserva para <span className="text-emerald-200">{datosReserva.servicio}</span> ha sido registrada.
-                Para garantizar su lugar, por favor confirme por WhatsApp.
+            <div className="bg-amber-500/10 border border-amber-500/30 text-amber-200 p-5 rounded-2xl">
+              <p className="font-semibold text-lg mb-1">¡Cita registrada con éxito!</p>
+              <p className="text-xs text-amber-300/80">
+                Para asegurar tu lugar, confirma tu reserva enviando un mensaje por WhatsApp.
               </p>
             </div>
 
@@ -78,7 +74,7 @@ export default function Home() {
               href={obtenerLinkWhatsApp()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2.5 bg-[#c6a87d] text-[#121212] font-bold py-4 px-6 rounded-xl hover:bg-[#b5966c] transition duration-200 transform hover:scale-[1.02] shadow-lg text-lg"
+              className="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3.5 px-4 rounded-xl transition duration-200 shadow-lg shadow-emerald-900/20"
             >
               <span>💬 Confirmar por WhatsApp</span>
             </a>
@@ -88,19 +84,17 @@ export default function Home() {
                 setMensajeCompleto(false)
                 setFormData({ nombre_cliente: '', telefono: '', servicio: 'Corte Premium', fecha_hora: '' })
               }}
-              className="text-sm text-gray-600 hover:text-gray-400 underline block mx-auto pt-3 transition"
+              className="text-xs text-neutral-400 hover:text-amber-400 transition block mx-auto pt-2"
             >
               Agendar otra cita
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-300 mb-6 text-center">
-              Reserva de Servicios Online
-            </h2>
-
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5 ml-1">Nombre Completo</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
+                Nombre Completo
+              </label>
               <input
                 type="text"
                 name="nombre_cliente"
@@ -108,12 +102,14 @@ export default function Home() {
                 placeholder="Ej. Ramón García"
                 value={formData.nombre_cliente}
                 onChange={handleChange}
-                className={inputClasses}
+                className="w-full bg-neutral-800/60 border border-neutral-700/60 rounded-xl p-3.5 text-sm text-neutral-100 placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5 ml-1">Teléfono Movil</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
+                Teléfono Móvil
+              </label>
               <input
                 type="tel"
                 name="telefono"
@@ -121,40 +117,38 @@ export default function Home() {
                 placeholder="Ej. 600 123 456"
                 value={formData.telefono}
                 onChange={handleChange}
-                className={inputClasses}
+                className="w-full bg-neutral-800/60 border border-neutral-700/60 rounded-xl p-3.5 text-sm text-neutral-100 placeholder-neutral-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition"
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5 ml-1">Servicio</label>
-                <div className="relative">
-                  <select
-                    name="servicio"
-                    value={formData.servicio}
-                    onChange={handleChange}
-                    className={`${inputClasses} appearance-none pr-10`}
-                  >
-                    <option value="Corte Premium">Corte Premium</option>
-                    <option value="Arreglo de Barba">Arreglo de Barba</option>
-                    <option value="Ritual Completo">Ritual Completo</option>
-                  </select>
-                  {/* Icono de flecha personalizado */}
-                  <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-600">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                  </div>
-                </div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
+                  Servicio
+                </label>
+                <select
+                  name="servicio"
+                  value={formData.servicio}
+                  onChange={handleChange}
+                  className="w-full bg-neutral-800/60 border border-neutral-700/60 rounded-xl p-3.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition cursor-pointer"
+                >
+                  <option value="Corte Premium" className="bg-neutral-900 text-white">Corte Premium</option>
+                  <option value="Arreglo de Barba" className="bg-neutral-900 text-white">Arreglo de Barba</option>
+                  <option value="Ritual Completo" className="bg-neutral-900 text-white">Ritual Completo</option>
+                </select>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1.5 ml-1">Fecha y Hora</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
+                  Fecha y Hora
+                </label>
                 <input
                   type="datetime-local"
                   name="fecha_hora"
                   required
                   value={formData.fecha_hora}
                   onChange={handleChange}
-                  className={inputClasses}
+                  className="w-full bg-neutral-800/60 border border-neutral-700/60 rounded-xl p-3.5 text-sm text-neutral-100 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition [color-scheme:dark]"
                 />
               </div>
             </div>
@@ -162,9 +156,9 @@ export default function Home() {
             <button
               type="submit"
               disabled={cargando}
-              className="w-full bg-[#111111] text-[#c6a87d] border border-[#c6a87d]/40 font-bold py-4 rounded-xl hover:bg-[#c6a87d] hover:text-[#121212] transition duration-300 transform hover:scale-[1.01] shadow-lg text-lg mt-8"
+              className="w-full mt-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-neutral-950 font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg shadow-amber-500/10 uppercase text-xs tracking-widest cursor-pointer"
             >
-              {cargando ? 'Registrando...' : 'Reservar Experiencia'}
+              {cargando ? 'Reservando...' : 'Reservar Experiencia'}
             </button>
           </form>
         )}
